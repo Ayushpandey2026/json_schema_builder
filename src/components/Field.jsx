@@ -1,6 +1,5 @@
 import React from 'react'
 import { useFieldArray, Controller } from 'react-hook-form'
-
 import { Input, Select, Button, Space, Card } from 'antd'
 
 const { Option } = Select
@@ -10,8 +9,7 @@ const Fld = ({ control: ctrl, registerName: path, remove: del, index: i }) => {
     fields: kids,
     append: add,
     remove: rem
-  } 
-  = useFieldArray({
+  } = useFieldArray({
     control: ctrl,
     name: `${path}.children`
   })
@@ -22,27 +20,27 @@ const Fld = ({ control: ctrl, registerName: path, remove: del, index: i }) => {
         {/* name input */}
         <Controller
           control={ctrl}
-           name={`${path}.name`}
-           render={({ field }) => (
+          name={`${path}.name`}
+          render={({ field }) => (
             <Input
-              placeholder="name"
+              placeholder="Name"
               {...field}
-              style={{ width: 180 }}
+              style={{ width: 180, minWidth: 120 }}
             />
           )}
         />
 
         {/* type select */}
-
         <Controller
           control={ctrl}
           name={`${path}.type`}
           render={({ field }) => (
             <Select
               {...field}
-               style={{ width: 160 }}
-              placeholder="type"
-               allowClear
+              placeholder="Select Type"
+              allowClear
+              style={{ width: 200, minWidth: 140, whiteSpace: 'normal' }}
+              dropdownMatchSelectWidth={false}
             >
               <Option value="String">String</Option>
               <Option value="Number">Number</Option>
@@ -51,16 +49,16 @@ const Fld = ({ control: ctrl, registerName: path, remove: del, index: i }) => {
               <Option value="Float">Float</Option>
               <Option value="Nested">Nested</Option>
             </Select>
-          )
-        }
+          )}
         />
 
-        {/* delete btn */}
+        {/* delete button */}
         <Button danger onClick={() => del(i)}>
           Delete
         </Button>
       </Space>
-             {/* nested area */}
+
+      {/* nested fields */}
       <Controller
         control={ctrl}
         name={`${path}.type`}
@@ -69,15 +67,13 @@ const Fld = ({ control: ctrl, registerName: path, remove: del, index: i }) => {
             <div style={{ marginLeft: '2rem', marginTop: '1rem' }}>
               {kids.map((fld, idx) => (
                 <Fld
-                  key= {fld.id}
-                  control= {ctrl}
-                  registerName= {`${path}.children.${idx}`}
-                  index = {idx}
-                  remove ={rem}
+                  key={fld.id}
+                  control={ctrl}
+                  registerName={`${path}.children.${idx}`}
+                  index={idx}
+                  remove={rem}
                 />
-              )
-            )
-              }
+              ))}
 
               <Button
                 type="dashed"
